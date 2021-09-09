@@ -85,8 +85,6 @@
                                             @endif
                                         </div>
                                     </div>
-
-
                                     <div class="card-footer text-center">
                                         <button type="submit" class="btn btn-fill btn-wd ">Let's go</button>
                                     </div>
