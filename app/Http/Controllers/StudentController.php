@@ -12,6 +12,7 @@ use App\Models\SubjectModel;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use Student;
 
@@ -26,8 +27,10 @@ class StudentController extends Controller
     {
         $search = $request->get('search');
         $idClass = $request->get('id-class');
-        $listStudent =  StudentModel::where('idClass', '=', $idClass)
-            ->paginate(5);
+        $listStudent =  StudentModel::join('classroom', 'classroom.idClass', '=', 'student.idClass')
+            ->where('name', 'LIKE', "%$search%")
+            ->orWhere('nameClass', 'LIKE', "%$search%")
+            ->paginate(7);
         $listClass = ClassModels::all();
         return view('student.index', [
             'listStudent' => $listStudent,
@@ -198,9 +201,21 @@ class StudentController extends Controller
         //put vao session
         session(['tmp_student' => $student[0]]);
 
+        //Validate
+        try{
+            $validator = Validator::make($request->all(), [ // <---
+                'email' => 'required|unique:student|max:255',
+            ]);
+        }catch(Exception $e){
+            if ($validator->fails()) {
+                return redirect()->back()->with('message', 'Có email bị trùng vui lòng kiểm tra lại!');
+            }
+        }
+
         return view('student.preview', [
             'student' => $student[0],
         ]);
+        
     }
 
     public function confirmSave()
@@ -222,6 +237,4 @@ class StudentController extends Controller
         }
         return view('student.insert-by-excel');
     }
-
-    
 }

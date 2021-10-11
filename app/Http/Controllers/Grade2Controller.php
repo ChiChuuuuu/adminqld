@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ClassGradeExport;
 use App\Exports\Grade2Export;
 use App\Imports\Grade2Import;
 use App\Models\ClassModels;
@@ -105,19 +106,40 @@ class Grade2Controller extends Controller
             //Nhập vào database
             foreach ($grade as $grade) {
                 DB::table("grades")->join('subject', 'subject.idSub', '=', 'grades.idSub')
-                ->updateOrInsert(
-                    ["idStudent" => $grade["id_sv"], "nameSub" => $grade["mon"]],
-                    [
-                        "Skill2" => $grade["thuc_hanh"],
-                        "Final2" => $grade["ly_thuyet"]
-                    ]
-                );
+                    ->updateOrInsert(
+                        ["idStudent" => $grade["id_sv"], "nameSub" => $grade["mon"]],
+                        [
+                            "Skill2" => $grade["thuc_hanh"],
+                            "Final2" => $grade["ly_thuyet"]
+                        ]
+                    );
             }
         }
         return redirect(route('grade2.insert-by-excel'))->with('success', 'Thêm điểm thành công');
     }
 
-    public function exportByIdStudent($id){
+    public function exportByIdStudent($id)
+    {
         return Excel::download(new Grade2Export($id), 'Diem sv.xlsx');
+    }
+
+    public function getSubjectByClass($id)
+    {
+        $class = ClassModels::find($id);
+
+        $listSub = GradeModel::join('student', 'grades.idStudent', '=', 'student.idStudent')
+            ->join('subject', 'subject.idSub', '=', 'grades.idSub')
+            ->join('classroom', 'classroom.idClass', '=', 'student.idClass')
+            ->where('classroom.idClass', $id)
+            ->get();
+        return view('subject.subject-by-class',[
+            'listSub' => $listSub,
+            'class' => $class,
+        ]);
+    }
+
+    public function exportByClass($idClass,$idSub)
+    {
+        return Excel::download(new ClassGradeExport($idClass,$idSub), 'Diem svlop.xlsx');
     }
 }

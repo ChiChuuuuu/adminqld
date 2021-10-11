@@ -63,6 +63,10 @@
                                     {{ $student->dob }}
                                 </td>
                                 <td><a href="{{ route('viewgrade.show', $student->idStudent) }}">Xem diem<a></td>
+                                    <td><a href="{{ route('student.edit', $student->idStudent) }}" title="Sửa thông tin"
+                                        class="btn btn-success btn-simple btn-xs">
+                                        <i class="fa fa-edit"></i></a></td>
+                                </td>
                             </tr>
                         @endforeach
 

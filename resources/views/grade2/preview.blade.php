@@ -5,7 +5,7 @@
         <div class="content">
             <div class="container-fluid">
                 <h1>
-                    Danh sách Sinh viên
+                    Danh sách điểm
                 </h1><br>
                 <form action="{{ url('/grade2-confirm') }}" method="post">
                     @csrf

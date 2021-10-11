@@ -75,7 +75,7 @@ class GradeController extends Controller
 
     public function GradeSample()
     {
-        return Excel::download(new GradeExport(true), now() . " sample.xlsx");
+        return Excel::download(new GradeExport(true), now() . " diem sinh vien.xlsx");
     }
 
     public function GradePreview(Request $request)
@@ -109,13 +109,14 @@ class GradeController extends Controller
         if ($grade != null && count($grade) > 0) {
             //Nhập vào database
             foreach ($grade as $grade) {
-                GradeModel::create([
-                    "idStudent" => $grade["id_sv"],
-                    "name" => $grade["ho_ten"],
-                    "idSub" => SubjectModel::where('nameSub', $grade["mon"])->value("idSub"),
-                    "Skill1" => $grade["thuc_hanh"],
-                    "Final1" => $grade["ly_thuyet"],
-                ]);
+                DB::table("grades")->join('subject', 'subject.idSub', '=', 'grades.idSub')
+                    ->updateOrInsert(
+                        ["idStudent" => $grade["id_sv"], 'grades.idSub' => SubjectModel::where('subject.nameSub', $grade["mon"])->value("subject.idSub")],
+                        [
+                            "Skill1" => $grade["thuc_hanh"],
+                            "Final1" => $grade["ly_thuyet"]
+                        ]
+                    );
             }
         }
         return redirect(route('grade.insert-by-excel'))->with('success', 'Thêm điểm thành công');

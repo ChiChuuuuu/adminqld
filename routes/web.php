@@ -71,6 +71,10 @@ Route::middleware([CheckLogin::class])->group(function () {
 
     Route::get('/export-by-id-student/{id}', [Grade2Controller::class, 'exportByIdStudent'])->name('export-by-id-student');
 
+    Route::get('/subject-by-class/{id}', [Grade2Controller::class, 'getSubjectByClass'])->name('subject-by-class');
+
+    Route::get('/export-by-class/{idClass}/{idSub}', [Grade2Controller::class, 'exportByClass'])->name('export-by-class');
+
     //CRUD Class
     Route::resource('class', ClassroomController::class);
 

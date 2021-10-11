@@ -24,6 +24,37 @@
                     </div>
                 @endif
 
+
+                {{-- @if (isset($e) && $e->any())
+                    <div class="alert alert-danger">
+                        @foreach ($e->all() as $error)
+                            {{ $error }}
+                        @endforeach
+                    </div>
+                @endif
+
+                @if (session()->has('failures'))
+                        <table class="table table-danger">
+                            <tr>
+                                <th>Row</th>
+                                <th>Attributes</th>
+                                <th>Error</th>
+                                <th>Value</th>
+                            </tr>
+                            @foreach (session()->get('failures') as $validation)
+                                <tr>
+                                    <td>{{ $validation->row() }}</td>
+                                    <td>{{ $validation->attribute() }}</td>
+                                    <td>
+                                        @foreach ($validation->errors() as $e)
+                                            {{ $e }}
+                                        @endforeach
+                                    </td>
+                                    <td>{{ $validation->values()[$validation->attribute()] }}</td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    @endif  --}}
             </div>
         </div>
     </div>

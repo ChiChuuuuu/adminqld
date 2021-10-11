@@ -12,16 +12,14 @@
                         viên</button></a> &nbsp &nbsp &nbsp &nbsp &nbsp
                 <a href="{{ route('student.insert-by-excel') }}"><button class="btn btn-default">Thêm sinh
                         viên = excel</button></a> &nbsp &nbsp &nbsp &nbsp &nbsp
-                        <a href="{{ url('/student-sample') }}"><button class="btn btn-default">Tải xuống mẫu excel</button></a>
+                <a href="{{ url('/student-sample') }}"><button class="btn btn-default">Tải xuống mẫu excel</button></a>
+                <br><br>
 
-                {{-- <form>
-                    <select name="id-class" class="selectpicker">
-                        <option>------</option>
-                        @foreach ($listClass as $class)
-                            <option value="{{ $class->idClass }}" @if ($class->idClass == $idClass) selected @endif>{{ $class->nameClass }}
-                            </option>
-                        @endforeach
-                    </select>
+                <form class="navbar-form navbar-left navbar-search-form" role="search">
+                    <div class="input-group">
+                        <input type="text" value="" class="form-control" placeholder="Search..." name="search" size="30px">
+
+                    </div>
                     <button class="btn btn-default"><i class="fa fa-search"></i></button>
                 </form>
 
@@ -34,6 +32,7 @@
                             <th>Mật khẩu </th>
                             <th>Giới tính </th>
                             <th>Ngày sinh </th>
+                            <th>Lớp </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,17 +54,20 @@
                                     @endif
                                 </td>
                                 <td>
-                                    {{ $student->dob }}
+                                    {{ DateTime::createFromFormat('Y-m-d', $student->dob)->format('d-m-Y') }}
+                                </td>
+                                <td>
+                                    {{ $student->nameClass }}
                                 </td>
                                 <td><a href="{{ route('student.edit', $student->idStudent) }}" title="Sửa"
-                                    class="btn btn-success btn-simple btn-xs">
-                                    <i class="fa fa-edit"></i></a></td>
+                                        class="btn btn-success btn-simple btn-xs">
+                                        <i class="fa fa-edit"></i></a></td>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-                {{ $listStudent->links('pagination::bootstrap-4') }} --}}
+                {{ $listStudent->appends(['search' => $search])->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>
