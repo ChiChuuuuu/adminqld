@@ -1,5 +1,11 @@
 @extends('layout.layout');
 
+<style>
+    td{
+        color: red;
+    }
+</style>
+
 @section('main')
     <div class="main-panel">
         <div class="content">
@@ -8,7 +14,7 @@
                     Thêm sinh viên = excel
                 </h1>
 
-                <form action="{{ url('/student-preview') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ url('/student-confirm') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <input type="file" name="excel"
@@ -24,27 +30,29 @@
                     </div>
                 @endif
 
+                @if (session()->has('success'))
+                    <div class="alert alert-success">
+                        {{ session()->get('success') }}
+                    </div>
+                @endif
 
-                {{-- @if (isset($e) && $e->any())
+
+                 @if (isset($errors) && $errors->any())
                     <div class="alert alert-danger">
-                        @foreach ($e->all() as $error)
+                        @foreach ($errors->all() as $error)
                             {{ $error }}
                         @endforeach
                     </div>
                 @endif
 
                 @if (session()->has('failures'))
-                        <table class="table table-danger">
+                        <table class="table table-danger" >
                             <tr>
-                                <th>Row</th>
-                                <th>Attributes</th>
                                 <th>Error</th>
                                 <th>Value</th>
                             </tr>
                             @foreach (session()->get('failures') as $validation)
                                 <tr>
-                                    <td>{{ $validation->row() }}</td>
-                                    <td>{{ $validation->attribute() }}</td>
                                     <td>
                                         @foreach ($validation->errors() as $e)
                                             {{ $e }}
@@ -54,7 +62,7 @@
                                 </tr>
                             @endforeach
                         </table>
-                    @endif  --}}
+                    @endif 
             </div>
         </div>
     </div>

@@ -202,11 +202,11 @@ class StudentController extends Controller
         session(['tmp_student' => $student[0]]);
 
         //Validate
-        try{
+        try {
             $validator = Validator::make($request->all(), [ // <---
                 'email' => 'required|unique:student|max:255',
             ]);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             if ($validator->fails()) {
                 return redirect()->back()->with('message', 'Có email bị trùng vui lòng kiểm tra lại!');
             }
@@ -215,26 +215,47 @@ class StudentController extends Controller
         return view('student.preview', [
             'student' => $student[0],
         ]);
-        
     }
 
-    public function confirmSave()
+    public function confirmSave(Request $request)
     {
-        $student = session('tmp_student');
-        if ($student != null && count($student) > 0) {
-            //Nhập vào database
-            foreach ($student as $student) {
-                $date = str_replace("/", "-", $student["ngay_sinh"]);
-                StudentModel::create([
-                    "name" => $student["ho_ten"],
-                    "email" => $student["email"],
-                    "password" => $student["password"],
-                    "gender" => $student["gioi_tinh"] == "Nam" ? 0 : 1,
-                    "dob" => date("Y-m-d", strtotime($date)),
-                    "idClass" => ClassModels::where("nameClass", $student["lop"])->value("idClass"),
-                ]);
-            }
+        // $student = session('tmp_student');
+        // if ($student != null && count($student) > 0) {
+        //     //Nhập vào database
+        //     foreach ($student as $student) {
+        //         $date = str_replace("/", "-", $student["ngay_sinh"]);
+        //         StudentModel::create([
+        //             "name" => $student["ho_ten"],
+        //             "email" => $student["email"],
+        //             "password" => $student["password"],
+        //             "gender" => $student["gioi_tinh"] == "Nam" ? 0 : 1,
+        //             "dob" => date("Y-m-d", strtotime($date)),
+        //             "idClass" => ClassModels::where("nameClass", $student["lop"])->value("idClass"),
+        //         ]);
+        //     }
+        // }
+        // return view('student.insert-by-excel');
+        $student = Excel::toArray(new StudentImport, $request->file('excel'));
+        try {
+            $students = $student[0][0];
+            $name = $students['ho_ten'];
+            $email = $students["email"];
+            $password = $students["password"];
+            $gender = $students["gioi_tinh"] == "Nam" ? 0 : 1;
+            $dob = $students["ngay_sinh"];
+            $lop = $students["lop"];
+        } catch (Exception $e) {
+            return redirect()->back()->with('message', 'File không đúng định dạng hoặc không có dữ liệu!');
         }
-        return view('student.insert-by-excel');
+
+        $file = $request->file('excel')->store('import');
+        $import = new StudentImport;
+        $import->import($file);
+
+        if ($import->failures()->isNotEmpty()) {
+            return back()->withFailures($import->failures());
+        }
+
+        return redirect()->back()->with('success', 'Thêm sinh viên thành công!');
     }
 }

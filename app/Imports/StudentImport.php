@@ -40,10 +40,6 @@ class StudentImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnE
         return new StudentModel($data);
     }
 
-    public function onError(Throwable $error)
-    {
-    }
-
     public function rules(): array
     {
         return [
@@ -51,6 +47,6 @@ class StudentImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnE
         ];
     }
 
-    public function onFailure(Failure ...$failure){
-    }
+    // public function onFailure(Failure ...$failure){
+    // }
 }
