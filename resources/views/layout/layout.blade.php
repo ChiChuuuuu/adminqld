@@ -48,7 +48,7 @@
         <div class="sidebar-wrapper">
             <div class="user">
                 <div class="info">
-                    
+
 
                     <a data-toggle="collapse" href="#collapseExample" class="collapsed">
                         <span>
@@ -60,11 +60,11 @@
 
                     <div class="collapse" id="collapseExample">
                         <ul class="nav">
-                            <li>
-                                <a href="#profile">      
+                            {{-- <li>
+                                <a href="#profile">
                                     <span class="sidebar-normal">Đổi mật khẩu</span>
                                 </a>
-                            </li>
+                            </li> --}}
                             <li>
                                 <a href="{{ route('logout') }}">
                                     <span class="sidebar-normal">Đăng Xuất</span>

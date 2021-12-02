@@ -16,7 +16,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($listSub as $sub)
+                        @foreach ($subject as $sub)
                             <tr>
                                 <td><?= $sub->idSub ?></td>
                                 <td><?= $sub->nameSub ?></td>

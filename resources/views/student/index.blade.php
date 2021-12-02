@@ -63,6 +63,11 @@
                                         class="btn btn-success btn-simple btn-xs">
                                         <i class="fa fa-edit"></i></a></td>
                                 </td>
+                                <td>
+                                    <a href="{{ url('/export-by-id-student', $student->idStudent) }}" title="Tai xuong diem"> <i
+                                            class="fas fa-arrow-circle-down"></i>
+                                    </a>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

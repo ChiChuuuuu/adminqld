@@ -72,7 +72,7 @@ class Grade2Controller extends Controller
 
     public function GradePreview(Request $request)
     {
-        //Lay du lieu trong file excel -> show thong tin 
+        //Lay du lieu trong file excel -> show thong tin
         $grade = Excel::toArray(new Grade2Import, $request->file('excel'));
 
         //Kiem tra file co dung dinh dang hay khong
@@ -127,14 +127,20 @@ class Grade2Controller extends Controller
     {
         $class = ClassModels::find($id);
 
-        $listSub = GradeModel::join('student', 'grades.idStudent', '=', 'student.idStudent')
-            ->join('subject', 'subject.idSub', '=', 'grades.idSub')
-            ->join('classroom', 'classroom.idClass', '=', 'student.idClass')
-            ->where('classroom.idClass', $id)
-            ->get();
+        $subject = ClassModels::join('major','major.idMajor','=','classroom.idMajor')
+        ->join('subject','subject.idMajor','=','major.idMajor')
+        ->where('classroom.idClass','=',$id)
+        ->get();
+
+        // $listSub = GradeModel::join('student', 'grades.idStudent', '=', 'student.idStudent')
+        //     ->join('subject', 'subject.idSub', '=', 'grades.idSub')
+        //     ->join('classroom', 'classroom.idClass', '=', 'student.idClass')
+        //     ->where('classroom.idClass', $id)
+        //     ->get();
+
         return view('subject.subject-by-class',[
-            'listSub' => $listSub,
             'class' => $class,
+            'subject' => $subject,
         ]);
     }
 
