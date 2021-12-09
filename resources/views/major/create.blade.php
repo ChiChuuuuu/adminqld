@@ -10,9 +10,9 @@
     <form action="{{ route('major.store') }}" method="post">
         <br>
         @csrf
-        Tên chuyên ngành <input type="text" name="name"/> <br><br>
+        Tên chuyên ngành <input type="text" name="name" required /> <br><br>
         <button class="btn btn-default" >Thêm</button>
-    </form>   
+    </form>
     </div></div>
 </div>
 @endsection

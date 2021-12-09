@@ -11,7 +11,7 @@
                     <br>
                     @method('PUT')
                     @csrf
-                    Tên chuyên ngành <input type="text" value='{{ $major->nameMajor }}' name="name" /> <br><br>
+                    Tên chuyên ngành <input type="text" value='{{ $major->nameMajor }}' name="name" required /> <br><br>
                     <button class="btn btn-default">update</button>
                 </form>
             </div>

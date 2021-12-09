@@ -9,7 +9,7 @@
                 </h1>
                 <form action="{{ route('subject.store') }}" method="post">
                     @csrf
-                    Tên môn <input type="text" name="nameSubject"/> <br><br>
+                    Tên môn <input type="text" name="nameSubject" required/> <br><br>
                     Chuyên ngành
                     <select name="idMajor">
                         @foreach ($listMajor as $major)

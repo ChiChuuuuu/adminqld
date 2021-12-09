@@ -10,7 +10,7 @@
                 <form action="{{ route('subject.update', ['subject'=>$subject->idSub]) }}" method="post">
                     @method('PUT')
                     @csrf
-                    Tên môn <input type="text" value="{{ $subject->nameSub }}" name="nameSubject"/> <br><br>
+                    Tên môn <input type="text" value="{{ $subject->nameSub }}" name="nameSubject" required/> <br><br>
                     Chuyên ngành
                     <select name="idMajor">
                         @foreach ($listMajor as $major)
