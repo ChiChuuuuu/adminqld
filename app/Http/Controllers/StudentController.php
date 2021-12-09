@@ -66,21 +66,28 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
+        $listStudent = StudentModel::all();
         $name = $request->get('name');
         $email = $request->get('email');
         $password = $request->get('password');
         $gender = $request->get('gender');
         $dob = $request->get('date');
         $class = $request->get('idClass');
-        $student = new StudentModel();
-        $student->name = $name;
-        $student->email = $email;
-        $student->password = $password;
-        $student->gender = $gender;
-        $student->dob = $dob;
-        $student->idClass = $class;
-        $student->save();
-        return redirect(route('student.index'));
+        foreach ($listStudent as $student) {
+            if ($student->email == $email) {
+                return redirect(route('student.create'))->with('message', 'Email da duoc su dung');
+            } else {
+                $student = new StudentModel();
+                $student->name = $name;
+                $student->email = $email;
+                $student->password = $password;
+                $student->gender = $gender;
+                $student->dob = $dob;
+                $student->idClass = $class;
+                $student->save();
+                return redirect(route('student.index'));
+            }
+        };
     }
 
     /**
@@ -182,7 +189,7 @@ class StudentController extends Controller
 
     public function StudentPreview(Request $request)
     {
-        //Lay du lieu trong file excel -> show thong tin 
+        //Lay du lieu trong file excel -> show thong tin
         $student = Excel::toArray(new StudentImport, $request->file('excel'));
 
         //  return redirect()->back()->with('message', 'File không đúng định dạng!');

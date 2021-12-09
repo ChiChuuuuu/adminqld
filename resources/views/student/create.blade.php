@@ -23,7 +23,7 @@
                                 Họ và tên
                             </td>
                             <td>
-                                <input type="text" name="name" required/>
+                                <input type="text" name="name" required />
                             </td>
                         </tr>
                         <tr>
@@ -74,7 +74,11 @@
                             </td>
                         </tr>
                     </table>
-
+                    @if (session()->has('message'))
+                        <div class="alert alert-danger">
+                            {{ session()->get('message') }}
+                        </div>
+                    @endif
 
                     <br>
                     <button class="btn btn-default">Thêm</button>
